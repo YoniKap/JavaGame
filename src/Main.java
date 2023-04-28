@@ -22,11 +22,15 @@ public class Main {
     }
     public static void moveACoin(String []arr , int a ,int b){
         int tmp=a;
+        if(a==b){
+            System.err.println("Same Index Given");
+            return;
+        }
         if(b>a) {
             System.err.println("Cant Move Right");
             return;
         }
-        if(a<0||a>arr.length){
+        if(a<0||a>=arr.length){
             System.err.println("Invalid Index");
             return;
         }
@@ -49,7 +53,7 @@ public class Main {
                 a--;
                 if(arr[a]!=null){
                     a+=1;
-                        System.err.println("Coin In The way Moved To Closest Possible Index"+"("+a+")");
+                        System.err.println("Coin In The way Moved To Closest Possible Index"+"("+(a+1)+")");
                         arr[a] = "Coin";
                         arr[tmp] = null;
                         return;
@@ -62,21 +66,44 @@ public class Main {
         arr[tmp]=null;
 
     }
+    public static int digitcount(int a){
+        int cnt=0;
+        while (a >0)
+        {
+            cnt++;
+            a/=10;
+        }
+        return cnt;
+    }
     public static void prntBoard(String[] arr){
-        System.out.print("| ");
+
+
+        System.out.println();
+        System.out.print("|");
         for (int i = 0; i < arr.length; i++) {
             if(arr[i]==null)
-                System.out.print("     | ");
+                System.out.print("    |");
             else
-                System.out.print(arr[i]+" | ");
+                System.out.print(arr[i]+"|");
         }
         System.out.println();
+        System.out.print("|");
 
+        for (int i = 1; i <=arr.length; i++) {
+            if (digitcount(i)==1)
+                System.out.print(" "+i+"  |");
+            if (digitcount(i)==2)
+                System.out.print(" "+i+" |");
+        }
+        System.out.println();
     }
 
     public static void main(String[] args) {
         Scanner scn = new Scanner(System.in);
-      String [] brd= createBoard(15);
+        System.out.println("Enter Size");
+        int size = scn.nextInt();
+
+        String [] brd= createBoard(size);
         prntBoard(brd);
         int player=0;
         while(brd[0]==null||brd[1]==null||brd[2]==null||brd[3]==null){
@@ -85,17 +112,24 @@ public class Main {
             if(player%2!=0)
                 System.out.println("Player 2:");
             System.out.println("Move from :");
-            int mv=scn.nextInt();
+            int mv=scn.nextInt()-1;
             System.out.println("Move to :");
-            int to=scn.nextInt();
-            moveACoin(brd, mv,to );
-            prntBoard(brd);
-            player++;
+            int to=scn.nextInt()-1;
+            moveACoin(brd,mv,to);
+                prntBoard(brd);
+                player++;
+
         }
-        if(player%2==0)
+        if(player%2==0) {
+            System.out.println("*************");
             System.out.println("Player 2 Wins");
-        if(player%2!=0)
+            System.out.println("*************");
+        }
+        if(player%2!=0){
+            System.out.println("*************");
             System.out.println("Player 1 Wins");
+            System.out.println("*************");
+        }
 
     }
 }
