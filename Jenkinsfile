@@ -1,50 +1,44 @@
 pipeline {
     agent any
-    enviorment{
+    environment {
         NEW_VERSION = '1.3.0'
-       
     }
 
-    stages{
-         
-        stage("build"){
-            steps{
+    stages {
+        stage("build") {
+            steps {
                 echo 'building the application...'
-                echo "buildversion = ${new_VERSION}"
+                echo "buildversion = ${NEW_VERSION}"
             }
         }
-        stage("test"){
-            when{
-                expression{
-                    env.BRANCH_NAME == 'main' || 'master'
+        stage("test") {
+            when {
+                expression {
+                    env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master'
                 }
             }
-            steps{
+            steps {
                 echo 'testing the application...'
             }
         }
-        stage("deploy"){
-          steps{
-            echo 'deploying the applicatiion...'
-          }
-        }
-
-        post{
-            always{
-                echo 'verdict:' 
-            }
-
-            success{
-                echo 'build sucesseded'               
-            }
-
-            failure{
-                echo 'build failed'
+        stage("deploy") {
+            steps {
+                echo 'deploying the application...'
             }
         }
-
-
-
     }
-    
+
+    post {
+        always {
+            echo 'verdict:'
+        }
+
+        success {
+            echo 'build succeeded'
+        }
+
+        failure {
+            echo 'build failed'
+        }
+    }
 }
